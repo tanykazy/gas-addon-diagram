@@ -4,8 +4,9 @@ const Sequence = Object.freeze({
 });
 
 function createParticipant(presentation, slide, name) {
+  const marginTop = getProperty(FieldName.SettingMarginTop) || DefaultMarginTop;
   const left = presentation.getPageWidth();
-  const top = 0;
+  const top = marginTop;
   const width = 100;
   const height = 25;
 
@@ -19,10 +20,11 @@ function createParticipant(presentation, slide, name) {
 }
 
 function createLifeline(presentation, slide, participant) {
+  const marginBottom = getProperty(FieldName.SettingMarginBottom) || DefaultMarginBottom;
   const startLeft = participant.getLeft() + participant.getWidth() / 2;
   const startTop = participant.getTop() + participant.getHeight();
   const endLeft = startLeft;
-  const endTop = presentation.getPageHeight();
+  const endTop = presentation.getPageHeight() - marginBottom;
   const connectionSites = participant.getConnectionSites();
 
   const line = slide.insertLine(SlidesApp.LineCategory.STRAIGHT, startLeft, startTop, endLeft, endTop)
@@ -55,7 +57,10 @@ function relocationElements(presentation, slide) {
 }
 
 function verticalEven(presentation, slide) {
-  const pageWidth = presentation.getPageWidth();
+  const marginRight = getProperty(FieldName.SettingMarginRight) || DefaultMarginRight;
+  const marginLeft = getProperty(FieldName.SettingMarginLeft) || DefaultMarginLeft;
+
+  const pageWidth = presentation.getPageWidth() - (marginLeft + marginRight);
   const elements = scanSequence(presentation, slide, Sequence.Participant).sort((a, b) => a.getLeft() - b.getLeft());
 
   let sumOfWidth = 0;

@@ -1,19 +1,18 @@
 function test() {
-  const presentation = SlidesApp.getActivePresentation();
-  console.log(presentation.getName());
-  const slides = presentation.getSlides();
-  const shapes = slides[0].getShapes();
+}
 
-  for (const shape of shapes) {
-    console.log(shape.getShapeType().toString());
+function getProperty(key) {
+  const userProperties = PropertiesService.getUserProperties();
+  const value = userProperties.getProperty(key);
+  if (value === null) {
+    return null;
   }
+  const result = JSON.parse(value);
+  return result;
+}
 
-  var selection = SlidesApp.getActivePresentation().getSelection();
-  var currentPage = selection.getCurrentPage();
-  console.log(currentPage);
-
-
-  // createParticipant(presentation, slides[0], 'Test Participant');
-  // createParticipant(presentation, slides[0], 'Test Participant');
-  // createParticipant(presentation, slides[0], 'Test Participant');
+function setProperty(key, object) {
+  const userProperties = PropertiesService.getUserProperties();
+  const value = JSON.stringify(object);
+  userProperties.setProperty(key, value);
 }
